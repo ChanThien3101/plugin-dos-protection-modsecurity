@@ -57,3 +57,7 @@ Please see the enclosed LICENSE file for full details.
 ## Notes
 
 Set full write permissions for the blockListIP.txt file
+
+## Contacts
+
+Email: `ducdh1906@gmail.com`
