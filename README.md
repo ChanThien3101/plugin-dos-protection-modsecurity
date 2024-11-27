@@ -36,13 +36,13 @@ The blocking is executed in phase 1: When an IP attempts to connect to the serve
 | `TX:DOS_BURST_TIME_SLICE`  | Period in seconds when we will forget a burst               |
 | `TX:STATIC_EXTENSIONS`     | Paths which can be ignored with regards to DoS              |
 
-As a precondition for these rules, please set the following three variables in `crs-setup-dos-protection.conf`:
+As a precondition for these rules, please set the following three variables in `dos-protection-before.conf`:
 
 - `TX:DOS_BLOCK_TIMEOUT`
 - `TX:DOS_COUNTER_THRESHOLD`
 - `TX:DOS_BURST_TIME_SLICE`
 
-And make sure that `TX:STATIC_EXTENSIONS` is set as required, also in `crs-setup-dos-protection.conf`.
+And make sure that `TX:STATIC_EXTENSIONS` is set as required, also in `dos-protection-before.conf`.
 
 ## Testing
 
