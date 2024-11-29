@@ -18,7 +18,7 @@ When a request hits a non-static resource (`TX:STATIC_EXTENSIONS`), then a count
 
 If the burst counter (IP:DOS_BURST_COUNTER) is greater than or equal to 2, the blocking flag (`IP:DOS_BLOCK_IP`) will be set. The blocking flag (`IP:DOS_BLOCK_IP`) will expire after a timeout period (`TX:DOS_BLOCK_TIMEOUT`). Subsequently, ModSecurity will invoke a Lua script to add the IP address to the blockListIP.txt file so that the IP can be blocked during the next access attempt. This entire process takes place in phase 5.
 
-There is a stricter sibling to this rule (9514170) in paranoia level 2, where the burst counter check (`IP:DOS_BURST_COUNTER`) hits at greater equal 1.
+There is a stricter sibling to this rule (9514152) in paranoia level 2, where the burst counter check (`IP:DOS_BURST_COUNTER`) hits at greater equal 1.
 
 ### Blocking
 
