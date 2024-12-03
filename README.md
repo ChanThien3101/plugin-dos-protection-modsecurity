@@ -101,7 +101,8 @@ Please see the enclosed LICENSE file for full details.
 
 ## Notes
 
-Set full write permissions for the blockListIP.txt file if you want to use rule 9514910 to block the IP
+Set full write permissions for the blockListIP.txt file if you want to use rule 9514910 to block the IP.
+
 ipset and iptables rules will be lost when you shut down or reboot, so you need to back them up before shutting down.
 
 ## Contacts
