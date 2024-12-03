@@ -105,6 +105,8 @@ Set full write permissions for the blockListIP.txt file if you want to use rule 
 
 ipset and iptables rules will be lost when you shut down or reboot, so you need to back them up before shutting down.
 
+Set up www-data for ModSecurity.
+
 ## Contacts
 
 Email: `ducdh1906@gmail.com`
