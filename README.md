@@ -18,15 +18,15 @@ When a request hits a non-static resource (`TX:STATIC_EXTENSIONS`), then a count
 
 If the burst counter (IP:DOS_BURST_COUNTER) is greater than or equal to 2, the blocking flag (`IP:DOS_BLOCK_IP`) will be set. The blocking flag (`IP:DOS_BLOCK_IP`) will expire after a timeout period (`TX:DOS_BLOCK_TIMEOUT`). Subsequently, ModSecurity will invoke a Lua script to add the IP address to the blockListIP.txt file so that the IP can be blocked during the next access attempt. This entire process takes place in phase 5.
 
-There is a stricter sibling to this rule (9514152 or 9514153) in paranoia level 2, where the burst counter check (`IP:DOS_BURST_COUNTER`) hits at greater equal 1.
+There is a stricter sibling to this rule (9523152 or 9523153) in paranoia level 2, where the burst counter check (`IP:DOS_BURST_COUNTER`) hits at greater equal 1.
 
 ### Blocking with blockListIP.txt
 
-If you want to use rule 9514910 to block the IP without using ipset and apply blocking through iptables, the blocking is executed in phase 1: When an IP attempts to connect to the server, if the Lua script detects that the IP exists in the blockListIP.txt file, the IP will be blocked. At the same time, the request will be dropped without sending any response.
+If you want to use rule 9523910 to block the IP without using ipset and apply blocking through iptables, the blocking is executed in phase 1: When an IP attempts to connect to the server, if the Lua script detects that the IP exists in the blockListIP.txt file, the IP will be blocked. At the same time, the request will be dropped without sending any response.
 
 ### Blocking with ipset and iptables
 
-If you want to add the offending IP to the ipset blocklist and apply blocking through iptables, we will use rules 9514151 or 9514153. Additionally, disable rule 9514910 as it is not necessary in this case. To set this up, we need the following steps:
+If you want to add the offending IP to the ipset blocklist and apply blocking through iptables, we will use rules 9523151 or 9523153. Additionally, disable rule 9523910 as it is not necessary in this case. To set this up, we need the following steps:
 
 - Create an ipset blocklist to block IPs
 
@@ -101,7 +101,7 @@ Please see the enclosed LICENSE file for full details.
 
 ## Notes
 
-Set full write permissions for the blockListIP.txt file if you want to use rule 9514910 to block the IP.
+Set full write permissions for the blockListIP.txt file if you want to use rule 9523910 to block the IP.
 
 ipset and iptables rules will be lost when you shut down or reboot, so you need to back them up before shutting down.
 
