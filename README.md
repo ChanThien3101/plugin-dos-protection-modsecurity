@@ -18,15 +18,15 @@ When a request hits a non-static resource (`TX:STATIC_EXTENSIONS`), then a count
 
 If the burst counter (IP:DOS_BURST_COUNTER) is greater than or equal to 2, the blocking flag (`IP:DOS_BLOCK_IP`) will be set. The blocking flag (`IP:DOS_BLOCK_IP`) will expire after a timeout period (`TX:DOS_BLOCK_TIMEOUT`). Subsequently, ModSecurity will invoke a Lua script to add the IP address to the blockListIP.txt file so that the IP can be blocked during the next access attempt. This entire process takes place in phase 5.
 
-There is a stricter sibling to this rule (9523152 or 9523153) in paranoia level 2, where the burst counter check (`IP:DOS_BURST_COUNTER`) hits at greater equal 1.
+There is a stricter sibling to this rule (9523151) in paranoia level 2, where the burst counter check (`IP:DOS_BURST_COUNTER`) hits at greater equal 1.
 
 ### Blocking with blockListIP.txt
 
-If you want to use rule 9523910 to block the IP without using ipset and apply blocking through iptables, the blocking is executed in phase 1: When an IP attempts to connect to the server, if the Lua script detects that the IP exists in the blockListIP.txt file, the IP will be blocked. At the same time, the request will be dropped without sending any response.
+If you want to use rule 9523990 to block the IP without using ipset and apply blocking through iptables, the blocking is executed in phase 1: When an IP attempts to connect to the server, if the Lua script detects that the IP exists in the blockListIP.txt file, the IP will be blocked. At the same time, the request will be dropped without sending any response.
 
 ### Blocking with ipset and iptables
 
-If you want to add the offending IP to the ipset blocklist and apply blocking through iptables, we will use rules 9523151 or 9523153. Additionally, disable rule 9523910 as it is not necessary in this case. To set this up, we need the following steps:
+If you want to add the offending IP to the ipset blocklist and apply blocking through iptables, we will use rules 9523150 or 9523151. Additionally, disable rule 9523990 as it is not necessary in this case. To set this up, we need the following steps:
 
 - Create an ipset blocklist to block IPs
 
@@ -55,18 +55,11 @@ sudo ipset save > /etc/ipset.rules
 
 You also need to create a script with root privileges and then allow ModSecurity to call this script via sudo. To do this, ensure that the user under which ModSecurity runs (usually www-data on Apache) has permission to run the command with sudo without requiring a password.
 
-- Move the add_ip_to_ipset.sh script to /usr/local/bin/ and give it execute permission
-
-```
-sudo mv add_ip_to_ipset.sh /usr/local/bin/
-sudo chmod +x /usr/local/bin/add_ip_to_ipset.sh
-```
-
 - Edit the sudoers file to allow the www-data user to run the script without a password prompt and add to allow www-data to run the script without a password
 
 ```
 sudo visudo
-www-data ALL=(ALL) NOPASSWD: /usr/local/bin/add_ip_to_ipset.sh
+www-data ALL=(ALL) NOPASSWD: /sbin/ipset add blocklistip * timeout *
 ```
 
 ### Variables
@@ -81,13 +74,13 @@ www-data ALL=(ALL) NOPASSWD: /usr/local/bin/add_ip_to_ipset.sh
 | `TX:DOS_BURST_TIME_SLICE`  | Period in seconds when we will forget a burst               |
 | `TX:STATIC_EXTENSIONS`     | Paths which can be ignored with regards to DoS              |
 
-As a precondition for these rules, please set the following three variables in `dos-protection-before.conf`:
+As a precondition for these rules, please set the following three variables in `dos-protection-config.conf`:
 
 - `TX:DOS_BLOCK_TIMEOUT`
 - `TX:DOS_COUNTER_THRESHOLD`
 - `TX:DOS_BURST_TIME_SLICE`
 
-And make sure that `TX:STATIC_EXTENSIONS` is set as required, also in `dos-protection-before.conf`.
+And make sure that `TX:STATIC_EXTENSIONS` is set as required, also in `dos-protection-config.conf`.
 
 ## Testing
 
@@ -101,7 +94,7 @@ Please see the enclosed LICENSE file for full details.
 
 ## Notes
 
-Set full write permissions for the blockListIP.txt file if you want to use rule 9523910 to block the IP.
+Set full write permissions for the blockListIP.txt file if you want to use rule 9523990 to block the IP.
 
 ipset and iptables rules will be lost when you shut down or reboot, so you need to back them up before shutting down.
 
