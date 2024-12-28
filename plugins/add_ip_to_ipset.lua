@@ -24,12 +24,14 @@ function main()
     -- Retrieve the IP address from ModSecurity
     local ip = m.getvar("REMOTE_ADDR")
     if not ip or not is_valid_ip(ip) then
+        m.log(2, "Error: Invalid IP address.")
         return nil -- Invalid IP
     end
 
-    -- Retrieve the ban time (configurable via ModSecurity or use the default)
-    local ban_time = 3600
+    -- Retrieve the ban time from ModSecurity configuration
+    local ban_time = tonumber(m.getvar("TX.DOS_BLOCK_TIMEOUT", "none")) or 3600
     if not is_valid_ban_time(ban_time) then
+        m.log(2, "Error: Invalid ban time.")
         return nil -- Invalid ban time
     end
 
@@ -41,8 +43,10 @@ function main()
 
     -- Check the execution result
     if result ~= 0 then
+        m.log(2, string.format("Error: Failed to execute ipset command for IP %s.", ip))
         return nil -- Error while executing the ipset command
     end
 
+    m.log(1, string.format("IP %s added to blocklist with timeout %d seconds.", ip, ban_time))
     return nil -- Success
 end
